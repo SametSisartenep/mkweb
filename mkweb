@@ -1,0 +1,48 @@
+#!/bin/rc
+rfork en
+filter='^(bin|lib|pic|tpl)'
+sections=`{walk -d | grep -v $filter}
+
+fn entitle {
+	basename $1 | sed 's/-/ /g' | bin/capitalize
+}
+
+fn usage {
+	echo usage: $0 [ -m ] [ -s section ] >[1=2]
+	exit usage
+}
+
+fn buildsection {
+	if(test -f $1/index.md)
+		>$1/index.html {
+			if(! ~ $1 .){
+				title=`{entitle $1}
+				<tpl/head sed 's/(<title>[^<]*)/\1 - '^$"title^'/'
+			}
+			if not cat tpl/head
+			cat tpl/menu \
+			<{bin/md2html.awk $1/index.md}\
+			tpl/feet
+		}
+}
+
+if(! ~ $#* 0)
+	switch($1){
+	case -m
+		>sitemap.txt {
+			site=http://rgl.antares-labs.eu
+			echo $site/index.html
+			for(d in $sections)
+				echo $site/$d/index.html
+		}
+	case -s
+		if(~ $#2 0)
+			usage
+		buildsection $2
+	case -*
+		usage
+	}
+if not
+	for(d in $sections .){
+		buildsection $d
+	}

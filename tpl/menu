@@ -1,0 +1,15 @@
+<div class="banner">
+<ul>
+	<li><a href="/">Root</a></li>
+	<li><a href="/about">About</a></li>
+	<li><a href="/portfolio">Portfolio</a></li>
+	<li><a href="/cv">CV</a></li>
+	<li><a href="/art">Art</a></li>
+	<li><a href="/guide">Guides</a></li>
+	<li>--------</li>
+	<li><a href="http://antares-labs.eu">ATL</a></li>
+	<li><a href="http://git.antares-labs.eu">ATL Git</a></li>
+	<li><a href="https://www.linkedin.com/in/rodrigo-g-lópez-178744178/">LinkedIn</a></li>
+	<li><a href="https://www.youtube.com/channel/UCrHNl7c7QGx7sR0UukebpQw/videos">YouTube</a></li>
+</ul>
+</div>
