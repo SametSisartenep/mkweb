@@ -35,14 +35,15 @@ if(! ~ $#* 0)
 			for(d in $sections)
 				echo $site/$d/index.html
 		}
+		exit
 	case -s
 		if(~ $#2 0)
 			usage
-		buildsection $2
+		sections=`{walk -d $2 | grep -v $filter}
 	case -*
 		usage
 	}
-if not
-	for(d in $sections .){
-		buildsection $d
-	}
+
+for(d in $sections .){
+	buildsection $d
+}

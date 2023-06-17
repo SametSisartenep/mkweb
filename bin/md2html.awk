@@ -96,6 +96,19 @@ function nextil(t) {
 	if(tag == "!["){
 		if(!match(t2, /(\[.*\])|(\(.*\))/))
 			return t1 tag nextil(t2);
+		width = "";
+		height = "";
+		if(match(t2, /[ 	]+[0-9]+%?x[0-9]+%?\]/)){
+			match(t2, /[0-9]+%?x/);
+			width = substr(t2, RSTART, RLENGTH - 1);
+			if(!match(width, /%$/))
+				width = width "px";
+			match(t2, /x[0-9]+%?\]/);
+			height = substr(t2, RSTART + 1, RLENGTH - 2);
+			if(!match(height, /%$/))
+				height = height "px";
+			sub(/[ 	]+[0-9]+%?x[0-9]+%?\]/, "]", t2);
+		}
 		match(t2, /^[^\]]*/);
 		alt = substr(t2, 1, RLENGTH);
 		t2 = substr(t2, RLENGTH + 2);
@@ -114,6 +127,8 @@ function nextil(t) {
 			}
 			if(match(url, /^<.*>$/))
 				url = substr(url, 2, RLENGTH - 2);
+			if(width != "" && height != "")
+				return t1 "<img src=\"" url "\" alt=\"" alt "\"" title " width=\"" width "\" height=\"" height "\" />" nextil(t2);
 			return t1 "<img src=\"" url "\" alt=\"" alt "\"" title " />" nextil(t2);
 		}
 		else{

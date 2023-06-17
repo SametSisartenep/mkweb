@@ -1,0 +1,9 @@
+#!/bin/rc
+files=(cv cv.es)
+
+for(f in $files)
+	cat <<EOF | gs -sDEVICE'='jpeg -dPDFFitPage'='true -dDEVICEWIDTHPOINTS'='232 -dDEVICEHEIGHTPOINTS'='300 -sOutputFile'='$f.jpeg $f.pdf
+
+
+quit
+EOF
