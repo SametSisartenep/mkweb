@@ -1,0 +1,38 @@
+#!/bin/rc
+rfork en
+
+fn entitle {
+	basename $1 | sed 's/-/ /g' | bin/capitalize
+}
+
+fn usage {
+	echo usage: $0 path >[1=2]
+	exit usage
+}
+
+if(! ~ $#* 1)
+	usage
+
+if(! test -d $1)
+	usage
+
+media=`{walk -f $1 | grep -i '\.(jpe?g|png|webp|mp4|webm)$'}
+
+>$1/index.html {
+	title=`{entitle $1 | sed 's/\./ /g'}
+	<tpl/head sed 's/(<title>[^<]*)/\1 - '^$"title^'/'
+	cat tpl/menu
+	echo '<h1>'^$"title^'</h1>'
+	echo '<div id="gallery">'
+	for(p in $media){
+		if(~ $p *.mp4 *.webm)
+			echo -n '<video width="200px" height="auto" controls><source src="/'^$p^'"></video>'
+		if not {
+			echo -n '<a href="/'^$p^'" target="_blank">'
+			echo -n '<img src="/'^$p^'" width="200px" height="auto"></img>'
+			echo '</a>'
+		}
+	}
+	echo '</div>'
+	cat tpl/feet
+}
